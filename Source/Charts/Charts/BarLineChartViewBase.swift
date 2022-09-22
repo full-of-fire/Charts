@@ -323,13 +323,13 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         calculateOffsets()
     }
     
-    internal func prepareValuePxMatrix()
+    open func prepareValuePxMatrix()
     {
         _rightAxisTransformer.prepareMatrixValuePx(chartXMin: xAxis._axisMinimum, deltaX: CGFloat(xAxis.axisRange), deltaY: CGFloat(rightAxis.axisRange), chartYMin: rightAxis._axisMinimum)
         _leftAxisTransformer.prepareMatrixValuePx(chartXMin: xAxis._axisMinimum, deltaX: CGFloat(xAxis.axisRange), deltaY: CGFloat(leftAxis.axisRange), chartYMin: leftAxis._axisMinimum)
     }
     
-    internal func prepareOffsetMatrix()
+    open func prepareOffsetMatrix()
     {
         _rightAxisTransformer.prepareMatrixOffset(inverted: rightAxis.isInverted)
         _leftAxisTransformer.prepareMatrixOffset(inverted: leftAxis.isInverted)
