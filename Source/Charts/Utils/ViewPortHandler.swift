@@ -16,6 +16,8 @@ import CoreGraphics
 @objc(ChartViewPortHandler)
 open class ViewPortHandler: NSObject
 {
+    public typealias TransfomerXModifyBlock = (CGFloat) -> CGFloat
+
     /// matrix used for touch events
     @objc open private(set) var touchMatrix = CGAffineTransform.identity
 
@@ -240,8 +242,12 @@ open class ViewPortHandler: NSObject
         // make sure scale and translation are within their bounds
         limitTransAndScale(matrix: &touchMatrix, content: contentRect)
         
-        chart.setNeedsDisplay()
-        
+        if let transfomerXModifyBlock = transfomerXModifyBlock {
+            touchMatrix.tx = transfomerXModifyBlock(touchMatrix.tx)
+        }
+        if invalidate {
+            chart.setNeedsDisplay()
+        }
         return touchMatrix
     }
     
