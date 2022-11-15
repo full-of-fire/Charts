@@ -50,6 +50,8 @@ open class ViewPortHandler: NSObject
 
     /// current translation (drag / pan) distance on the y-axis
     @objc open private(set) var transY: CGFloat = 0
+    
+    public var transfomerXModifyBlock: TransfomerXModifyBlock?
 
     /// offset that allows the chart to be dragged over its bounds on the x-axis
     private var transOffsetX: CGFloat = 0
