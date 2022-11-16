@@ -585,7 +585,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     }
     
     #if !os(tvOS)
-    @objc private func pinchGestureRecognized(_ recognizer: NSUIPinchGestureRecognizer)
+    @objc open func pinchGestureRecognized(_ recognizer: NSUIPinchGestureRecognizer)
     {
         if recognizer.state == NSUIGestureRecognizerState.began
         {
@@ -655,17 +655,19 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
                     let scaleX = canZoomMoreX ? recognizer.nsuiScale : 1.0
                     let scaleY = canZoomMoreY ? recognizer.nsuiScale : 1.0
                     
-                    var matrix = CGAffineTransform(translationX: location.x, y: location.y)
-                    matrix = matrix.scaledBy(x: scaleX, y: scaleY)
-                    matrix = matrix.translatedBy(x: -location.x, y: -location.y)
-                    
-                    matrix = viewPortHandler.touchMatrix.concatenating(matrix)
-                    
-                    viewPortHandler.refresh(newMatrix: matrix, chart: self, invalidate: true)
-
-                    if delegate !== nil
-                    {
-                        delegate?.chartScaled?(self, scaleX: scaleX, scaleY: scaleY)
+                    if canPerformZoomChange(recognizer) {
+                        var matrix = CGAffineTransform(translationX: location.x, y: location.y)
+                        matrix = matrix.scaledBy(x: scaleX, y: scaleY)
+                        matrix = matrix.translatedBy(x: -location.x, y: -location.y)
+                        
+                        matrix = viewPortHandler.touchMatrix.concatenating(matrix)
+                        
+                        viewPortHandler.refresh(newMatrix: matrix, chart: self, invalidate: true)
+                        
+                        if delegate !== nil
+                        {
+                            delegate?.chartScaled?(self, scaleX: scaleX, scaleY: scaleY)
+                        }
                     }
                 }
                 
@@ -675,7 +677,11 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     }
     #endif
     
-    @objc private func panGestureRecognized(_ recognizer: NSUIPanGestureRecognizer)
+    open func canPerformZoomChange(_ recognizer: NSUIPinchGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @objc open func panGestureRecognized(_ recognizer: NSUIPanGestureRecognizer)
     {
         if recognizer.state == NSUIGestureRecognizerState.began && recognizer.nsuiNumberOfTouches() > 0
         {
