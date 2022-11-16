@@ -518,6 +518,15 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     
     private var _isDragging = false
     private var _isScaling = false
+    
+    public var isScaling: Bool {
+        _isScaling
+    }
+    
+    public var isDragging: Bool {
+        _isDragging
+    }
+    
     private var _gestureScaleAxis = GestureScaleAxis.both
     private var _closestDataSetToTouch: ChartDataSetProtocol!
     private var _panGestureReachedEdge: Bool = false
