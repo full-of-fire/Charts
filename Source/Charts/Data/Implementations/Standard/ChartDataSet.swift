@@ -299,6 +299,13 @@ open class ChartDataSet: ChartBaseDataSet
         return closest
     }
     
+    
+    /// 比较两个double是否相等
+    /// - Parameters:
+    ///   - a: a
+    ///   - b: b
+    ///   - epsilon: 误差值
+    /// - Returns: 是否相等
     open func isEqual(_ a: Double, _ b: Double, epsilon: Double = 0.00000000000001) -> Bool {
         return abs(a - b) <= epsilon
     }
