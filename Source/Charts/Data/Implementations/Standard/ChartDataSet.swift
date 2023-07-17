@@ -232,16 +232,7 @@ open class ChartDataSet: ChartBaseDataSet
             }
             
             let ad1 = abs(d1), ad2 = abs(d2)
-            
-            if ad2 < ad1 {
-                // [m + 1] is closer to xValue
-                // Search in an higher place
-                low = mid + 1
-            } else if ad1 < ad2 {
-                // [m] is closer to xValue
-                // Search in a lower place
-                high = mid
-            } else {
+            if isEqual(ad1, ad2) {
                 // We have multiple sequential x-value with same distance
                 
                 if d1 >= 0.0 {
@@ -251,6 +242,14 @@ open class ChartDataSet: ChartBaseDataSet
                     // Search in an higher place
                     low = mid + 1
                 }
+            } else if ad2 < ad1 {
+                // [m + 1] is closer to xValue
+                // Search in an higher place
+                low = mid + 1
+            } else if ad1 < ad2 {
+                // [m] is closer to xValue
+                // Search in a lower place
+                high = mid
             }
             
             closest = high
@@ -273,7 +272,7 @@ open class ChartDataSet: ChartBaseDataSet
             
             // Search by closest to y-value
             if !yValue.isNaN {
-                while closest > 0 && entries[closest - 1].x == closestXValue {
+                while closest > 0 && isEqual(entries[closest - 1].x, closestXValue) {
                     closest -= 1
                 }
                 
@@ -286,7 +285,7 @@ open class ChartDataSet: ChartBaseDataSet
                     
                     let value = entries[closest]
                     
-                    if value.x != closestXValue { break }
+                    if !isEqual(value.x, closestXValue) { break }
                     if abs(value.y - yValue) < abs(closestYValue - yValue) {
                         closestYValue = yValue
                         closestYIndex = closest
@@ -298,6 +297,10 @@ open class ChartDataSet: ChartBaseDataSet
         }
         
         return closest
+    }
+    
+    open func isEqual(_ a: Double, _ b: Double, epsilon: Double = 0.00000000000001) -> Bool {
+        return abs(a - b) <= epsilon
     }
     
     /// - Parameters:
