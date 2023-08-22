@@ -304,8 +304,8 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         guard let data = data
             else { return }
         
-        let fromX = self.lowestVisibleX.legalInt?.toDouble ?? 0.0
-        let toX = self.highestVisibleX.legalInt?.toDouble ?? 0.0
+        let fromX = self.lowestVisibleX.legalInt?.toDouble ?? self.lowestVisibleX
+        let toX = self.highestVisibleX.legalInt?.toDouble ?? self.highestVisibleX
         data.calcMinMaxY(fromX: fromX, toX: toX)
         
         xAxis.calculate(min: data.xMin, max: data.xMax)
@@ -1977,7 +1977,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
 
 fileprivate extension Double {
     var legalInt: Int? {
-        guard self.isFinite else { return nil }
+        guard self <= Int.max.toDouble, self >= Int.min.toDouble else { return nil }
         return Int(self)
     }
 }
